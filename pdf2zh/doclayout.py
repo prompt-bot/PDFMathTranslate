@@ -13,7 +13,8 @@ try:
     options = onnxruntime.SessionOptions()
     options.intra_op_num_threads = 1  # 设置线程数
     options.inter_op_num_threads = 1
-    options.execution_mode = onnxruntime.ExecutionMode.ORT_SEQUENTIAL 
+    options.execution_mode = onnxruntime.ExecutionMode.ORT_SEQUENTIAL
+    options.enable_cpu_mem_arena = False
 except ImportError as e:
     if "DLL load failed" in str(e):
         raise OSError(
