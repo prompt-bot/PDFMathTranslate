@@ -6,9 +6,14 @@ import numpy as np
 import ast
 from babeldoc.assets.assets import get_doclayout_onnx_model_path
 
+options = None
 try:
     import onnx
     import onnxruntime
+    options = onnxruntime.SessionOptions()
+    options.intra_op_num_threads = 1  # 设置线程数
+    options.inter_op_num_threads = 1
+    options.execution_mode = onnxruntime.ExecutionMode.ORT_SEQUENTIAL 
 except ImportError as e:
     if "DLL load failed" in str(e):
         raise OSError(
@@ -78,7 +83,7 @@ class OnnxModel(DocLayoutModel):
         self._stride = ast.literal_eval(metadata["stride"])
         self._names = ast.literal_eval(metadata["names"])
 
-        self.model = onnxruntime.InferenceSession(model.SerializeToString())
+        self.model = onnxruntime.InferenceSession(model.SerializeToString(), options=options)
 
     @staticmethod
     def from_pretrained():
