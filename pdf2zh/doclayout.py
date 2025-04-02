@@ -84,7 +84,8 @@ class OnnxModel(DocLayoutModel):
         self._stride = ast.literal_eval(metadata["stride"])
         self._names = ast.literal_eval(metadata["names"])
 
-        self.model = onnxruntime.InferenceSession(model.SerializeToString(), options=options)
+        # print(model.SerializeToString(), options)
+        self.model = onnxruntime.InferenceSession(model.SerializeToString(), sess_options=options)
 
     @staticmethod
     def from_pretrained():
