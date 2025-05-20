@@ -807,6 +807,8 @@ class DifyTranslator(BaseTranslator):
             response = requests.post(
                 self.api_url, headers=headers, data=json.dumps(payload)
             )
+            print('request header: ', json.dumps(headers))
+            print('request body: ', json.dumps(payload))
             response.raise_for_status()  # 如果响应状态码不是200，将抛出HTTPError异常
             response_data = response.json()  # 解析响应体为JSON
             print(response_data)  # 处理JSON数据
