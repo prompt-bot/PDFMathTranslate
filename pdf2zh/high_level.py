@@ -112,6 +112,8 @@ def translate_patch(
         total_pages = len(pages)
     else:
         total_pages = doc_zh.page_count
+    if len(pages) >= doc_zh.page_count:
+        total_pages = doc_zh.page_count
 
     parser = PDFParser(inf)
     doc = PDFDocument(parser)
