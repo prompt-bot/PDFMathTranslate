@@ -795,14 +795,30 @@ class DifyTranslator(BaseTranslator):
         }
 
         # 向 Dify 服务器发送请求
-        response = requests.post(
-            self.api_url, headers=headers, data=json.dumps(payload)
-        )
-        response.raise_for_status()
-        response_data = response.json()
+        #response = requests.post(
+        #    self.api_url, headers=headers, data=json.dumps(payload)
+        #)
+        #response.raise_for_status()
+        #response_data = response.json()
 
         # 解析响应
-        return response_data.get("answer", '')
+        #return response_data.get("answer", '')
+        try:
+            response = requests.post(
+                self.api_url, headers=headers, data=json.dumps(payload)
+            )
+            response.raise_for_status()  # 如果响应状态码不是200，将抛出HTTPError异常
+            response_data = response.json()  # 解析响应体为JSON
+            print(response_data)  # 处理JSON数据
+            return response_data.get("answer", '')
+            
+            # 尝试再次解析响应体为JSON将会导致错误
+            # json_data = response.json()  # 这行代码会抛出错误，因为响应体已经被读取
+        except requests.exceptions.HTTPError as http_err:
+            print(f"HTTP错误发生: {http_err}")
+            print('response: ', response.text)
+        except requests.exceptions.RequestException as req_err:
+            print(f"请求异常: {req_err}")
 
 
 class ArgosTranslator(BaseTranslator):
